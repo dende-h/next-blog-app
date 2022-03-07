@@ -6,15 +6,21 @@
     "start": "next start"
   },
   "dependencies": {
+    "@aws-amplify/ui-react": "^2.8.0",
     "@chakra-ui/icons": "^1.0.5",
     "@chakra-ui/react": "^1.4.2",
     "@chakra-ui/theme-tools": "1.1.2",
     "@emotion/react": "11.1.5",
     "@emotion/styled": "11.1.5",
+    "@notionhq/client": "^0.4.13",
+    "aws-amplify": "^4.3.15",
+    "axios": "^0.26.0",
     "framer-motion": "^4.0.3",
     "next": "latest",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-hook-form": "^7.27.1",
+    "react-icons": "^4.3.1"
   },
   "devDependencies": {
     "@types/node": "^14.6.0",
