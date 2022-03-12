@@ -10,6 +10,11 @@
       "StackName": "amplify-nextblogapp-dev-164013",
       "StackId": "arn:aws:cloudformation:ap-northeast-1:645737250360:stack/amplify-nextblogapp-dev-164013/a9344b60-a1d7-11ec-aab1-0a9e68d9f71f",
       "AmplifyAppId": "d2zys4n9c73312"
+    },
+    "categories": {
+      "auth": {
+        "nextblogapp4f906337": {}
+      }
     }
   }
 }
