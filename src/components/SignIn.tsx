@@ -12,7 +12,6 @@ import {
 	Text
 } from "@chakra-ui/react";
 import { memo, useEffect, useState, VFC } from "react";
-
 import { useInputForm } from "../hooks/useInputForm";
 import { Auth } from "aws-amplify";
 import Router from "next/router";

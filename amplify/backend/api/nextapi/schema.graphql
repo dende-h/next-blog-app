@@ -6,7 +6,7 @@ input AMPLIFY {
 type Post @model @auth(rules: [{ allow: owner }, { allow: public, operations: [read] }]) {
 	id: ID!
 	title: String!
-	constent: String!
+	content: String!
 	createdAt: AWSDateTime
 	updatedAt: AWSDateTime
 }

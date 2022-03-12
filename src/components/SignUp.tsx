@@ -13,13 +13,13 @@ import {
 } from "@chakra-ui/react";
 import { Auth } from "aws-amplify";
 import Link from "next/link";
-import { useState, useEffect, VFC } from "react";
+import { useState, useEffect, VFC, memo } from "react";
 import { useInputForm } from "../hooks/useInputForm";
 import Router from "next/router";
 import { useSetRecoilState } from "recoil";
 import { isSignUpState } from "../globalState/isSignUpState";
 
-const SignUp: VFC = () => {
+const SignUp: VFC = memo(() => {
 	const email = useInputForm();
 	const password = useInputForm();
 	const confirmPassword = useInputForm();
@@ -199,5 +199,5 @@ const SignUp: VFC = () => {
 			)}
 		</>
 	);
-};
+});
 export default SignUp;
