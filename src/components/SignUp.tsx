@@ -9,27 +9,20 @@ import {
 	Text,
 	FormControl,
 	FormLabel,
-	InputGroup,
-	InputRightElement,
-	IconButton,
 	Checkbox
 } from "@chakra-ui/react";
 import { Auth } from "aws-amplify";
 import Link from "next/link";
 import { useState, useEffect, VFC } from "react";
 import { useInputForm } from "../hooks/useInputForm";
-import { useIsShow } from "../hooks/useIsShow";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import Router from "next/router";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { isSignUpState } from "../globalState/isSignUpState";
 
 const SignUp: VFC = () => {
 	const email = useInputForm();
 	const password = useInputForm();
 	const confirmPassword = useInputForm();
-	const passwordShow = useIsShow();
-	const confirmPasswordShow = useIsShow();
 	const code = useInputForm();
 	const [isInvalid, setIsInvalid] = useState(false);
 	const regexPassword = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])/;

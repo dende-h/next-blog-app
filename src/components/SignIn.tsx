@@ -17,8 +17,9 @@ import { useInputForm } from "../hooks/useInputForm";
 import { Auth } from "aws-amplify";
 import Router from "next/router";
 import { toast } from "react-hot-toast";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { isSignUpState } from "../globalState/isSignUpState";
+import { isAuthenticatedState } from "../globalState/isAuthenticatedState";
 
 const SignIn: VFC = memo(() => {
 	const email = useInputForm();
@@ -29,48 +30,67 @@ const SignIn: VFC = memo(() => {
 	const [isSendCode, setIsSendCode] = useState(false);
 	const setIsSignUp = useSetRecoilState(isSignUpState);
 	const [isChecked, setIsChecked] = useState(false);
+	const [isAuthenticated, setIsAuthenticated] = useRecoilState(isAuthenticatedState);
+	const [isDisabledSignInButton, SetIsDisabledSignInButton] = useState(true);
+	const [isDisabledConfirmButton, SetIsDisabledConfirmButton] = useState(true);
+	const [isDisabledResetButton, SetIsDisabledResetButton] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
+	const regexPassword = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])/;
 
 	useEffect(() => {
-		const abortController = new AbortController();
-		const isAuth = async () => {
-			const currentUser = await Auth.currentAuthenticatedUser();
-			try {
-				currentUser ? Router.push("my-page") : Router.push("sign-in");
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		isAuth();
-		return () => {
-			abortController.abort();
-		};
+		isAuthenticated && Router.push("my-page");
 	}, []);
+
+	useEffect(() => {
+		email.value !== "" && password.value !== "" && !isLoading
+			? SetIsDisabledSignInButton(false)
+			: SetIsDisabledSignInButton(true);
+	}, [email.value, password.value]);
+
+	useEffect(() => {
+		email.value !== "" && !isLoading ? SetIsDisabledConfirmButton(false) : SetIsDisabledConfirmButton(true);
+	}, [email.value, password.value]);
+
+	useEffect(() => {
+		code.value !== "" && newPassword.value.length > 7 && regexPassword.test(newPassword.value) && !isLoading
+			? SetIsDisabledResetButton(false)
+			: SetIsDisabledResetButton(true);
+	}, [code.value, newPassword.value]);
 
 	const signIn = async () => {
 		try {
+			setIsLoading(true);
 			await Auth.signIn(email.value, password.value);
+			setIsAuthenticated(true);
 			Router.push("my-page");
 		} catch (error) {
-			console.log(error);
+			toast.error("Could not Sign in.");
+			setIsLoading(false);
 		}
 	};
 	const sendCode = async () => {
 		try {
+			setIsLoading(true);
 			await Auth.forgotPassword(email.value);
 			setIsSendCode(true);
+			setIsLoading(false);
 		} catch (error) {
-			console.log(error);
+			toast.error("Please check your email address");
+			setIsLoading(false);
 		}
 	};
 
 	const resetPassword = async () => {
 		try {
+			setIsLoading(true);
 			await Auth.forgotPasswordSubmit(email.value, code.value, newPassword.value);
 			setIsForgotPassword(false);
 			setIsSendCode(false);
 			toast.success("completed reset password");
+			setIsLoading(false);
 		} catch (error) {
-			console.log(error);
+			toast.error("Please confirm your entry");
+			setIsLoading(false);
 		}
 	};
 
@@ -86,21 +106,43 @@ const SignIn: VFC = memo(() => {
 							<Divider my={2} />
 							{isSendCode ? (
 								<Stack spacing={6} py={4} px={10}>
-									<Input
-										bg="grey.200"
-										placeholder="Verification code"
-										type={"text"}
-										value={code.value}
-										onChange={code.onChangeInputForm}
-									/>
-									<Input
-										bg="grey.200"
-										placeholder="New password"
-										type={isChecked ? "text" : "password"}
-										value={newPassword.value}
-										onChange={newPassword.onChangeInputForm}
-									/>
-									<Button colorScheme={"twitter"} outline="none" onClick={resetPassword}>
+									<FormControl>
+										<FormLabel htmlFor="email">
+											<Text>Please enter the verification code</Text>
+										</FormLabel>
+										<Input
+											bg="grey.200"
+											placeholder="Verification code"
+											type={"text"}
+											value={code.value}
+											onChange={code.onChangeInputForm}
+										/>
+										<FormLabel htmlFor="email">
+											{newPassword.value.length > 7 && regexPassword.test(newPassword.value) ? (
+												<Text>New password : OK</Text>
+											) : (
+												<Text>New password</Text>
+											)}
+										</FormLabel>
+										<Input
+											bg="grey.200"
+											placeholder="New password"
+											type={isChecked ? "text" : "password"}
+											value={newPassword.value}
+											onChange={newPassword.onChangeInputForm}
+										/>
+										{newPassword.value === "" || newPassword.value.length > 7 || <Text color={"red"}>Not enough</Text>}
+										{newPassword.value === "" || regexPassword.test(newPassword.value) || (
+											<Text color={"red"}>At least 8 alphanumeric characters, including uppercase</Text>
+										)}
+									</FormControl>
+									<Button
+										colorScheme={"twitter"}
+										outline="none"
+										onClick={resetPassword}
+										isDisabled={isDisabledResetButton}
+										isLoading={isLoading}
+									>
 										Reset password
 									</Button>
 									<Text
@@ -114,15 +156,25 @@ const SignIn: VFC = memo(() => {
 								</Stack>
 							) : (
 								<Stack spacing={6} py={4} px={10}>
-									<Input
-										bg="grey.200"
-										placeholder="Enter email"
-										type={"email"}
-										value={email.value}
-										onChange={email.onChangeInputForm}
-									/>
-
-									<Button colorScheme={"twitter"} outline="none" onClick={sendCode}>
+									<FormControl>
+										<FormLabel htmlFor="email">
+											<Text>Please enter your email address</Text>
+										</FormLabel>
+										<Input
+											bg="grey.200"
+											placeholder="Enter email"
+											type={"email"}
+											value={email.value}
+											onChange={email.onChangeInputForm}
+										/>
+									</FormControl>
+									<Button
+										colorScheme={"twitter"}
+										outline="none"
+										onClick={sendCode}
+										isDisabled={isDisabledConfirmButton}
+										isLoading={isLoading}
+									>
 										confirm
 									</Button>
 									<Text
@@ -183,7 +235,13 @@ const SignIn: VFC = memo(() => {
 										onChange={password.onChangeInputForm}
 									/>
 								</FormControl>
-								<Button colorScheme={"twitter"} outline="none" onClick={signIn}>
+								<Button
+									colorScheme={"twitter"}
+									outline="none"
+									onClick={signIn}
+									isDisabled={isDisabledSignInButton}
+									isLoading={isLoading}
+								>
 									Sign in
 								</Button>
 								<Text
