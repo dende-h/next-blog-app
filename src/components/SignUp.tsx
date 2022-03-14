@@ -30,7 +30,7 @@ const SignUp: VFC = memo(() => {
 	const [isSubmitted, setIsSubmitted] = useState(false);
 	const [isError, setIsError] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
-	const SetIsSignUp = useSetRecoilState(isSignUpState);
+	const setIsSignUp = useSetRecoilState(isSignUpState);
 	const [isChecked, setIsChecked] = useState(false);
 
 	useEffect(() => {
@@ -61,9 +61,8 @@ const SignUp: VFC = memo(() => {
 	const confirmSignUp = async () => {
 		try {
 			await Auth.confirmSignUp(email.value, code.value);
-			await Auth.signIn(email.value, password.value);
-
-			Router.push("/my-page");
+			setIsSubmitted(false);
+			setIsSignUp(false);
 		} catch (error) {
 			setIsError(true);
 			setErrorMessage(`${error}`);
@@ -183,7 +182,7 @@ const SignUp: VFC = memo(() => {
 									fontSize={"15px"}
 									fontFamily={"serif"}
 									_hover={{ color: "teal", fontWeight: "bold", textDecoration: "underline" }}
-									onClick={() => SetIsSignUp(false)}
+									onClick={() => setIsSignUp(false)}
 								>
 									Already have an account?
 								</Text>

@@ -11,9 +11,16 @@ export const createPost = /* GraphQL */ `
       id
       title
       content
+      author
+      handlename {
+        id
+        handleName
+        createdAt
+        updatedAt
+        owner
+      }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -26,9 +33,16 @@ export const updatePost = /* GraphQL */ `
       id
       title
       content
+      author
+      handlename {
+        id
+        handleName
+        createdAt
+        updatedAt
+        owner
+      }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -41,6 +55,55 @@ export const deletePost = /* GraphQL */ `
       id
       title
       content
+      author
+      handlename {
+        id
+        handleName
+        createdAt
+        updatedAt
+        owner
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createName = /* GraphQL */ `
+  mutation CreateName(
+    $input: CreateNameInput!
+    $condition: ModelNameConditionInput
+  ) {
+    createName(input: $input, condition: $condition) {
+      id
+      handleName
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateName = /* GraphQL */ `
+  mutation UpdateName(
+    $input: UpdateNameInput!
+    $condition: ModelNameConditionInput
+  ) {
+    updateName(input: $input, condition: $condition) {
+      id
+      handleName
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteName = /* GraphQL */ `
+  mutation DeleteName(
+    $input: DeleteNameInput!
+    $condition: ModelNameConditionInput
+  ) {
+    deleteName(input: $input, condition: $condition) {
+      id
+      handleName
       createdAt
       updatedAt
       owner

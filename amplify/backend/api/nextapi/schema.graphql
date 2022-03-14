@@ -3,10 +3,17 @@
 input AMPLIFY {
 	globalAuthRule: AuthRule = { allow: public }
 } # FOR TESTING ONLY!
-type Post @model @auth(rules: [{ allow: owner }, { allow: public, operations: [read] }]) {
+type Post @model @auth(rules: [{ allow: owner, ownerField: "author" }, { allow: public, operations: [read] }]) {
 	id: ID!
 	title: String!
 	content: String!
+	author: ID!
+	handlename: Name @hasOne(fields: ["author"])
 	createdAt: AWSDateTime
 	updatedAt: AWSDateTime
+}
+
+type Name @model @auth(rules: [{ allow: owner }, { allow: public, operations: [read] }]) {
+	id: ID!
+	handleName: String @default(value: "Anonymous")
 }
