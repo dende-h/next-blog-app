@@ -4,17 +4,21 @@ import { ProtectRoute } from "../components/ProtectRoute";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { isAuthenticatedState } from "../globalState/isAuthenticatedState";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { CreatePostInput, CreatePostMutation, ListPostsQuery } from "../API";
+import { VscSignOut } from "react-icons/vsc";
 import { useEffect, useState } from "react";
-import { Box, Button, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Center, IconButton, Input, Stack, Text, Wrap, WrapItem } from "@chakra-ui/react";
 import awsExports from "../aws-exports";
-import { createPost } from "../graphql/mutations";
-import { listPosts } from "../graphql/queries";
+
 import { blogLists } from "../globalState/blogLists";
+import { Footer } from "../components/Footer";
+import { PhraseCord } from "../components/PhraseCard";
+import { AddPhraseCord } from "../components/AddPhraseCard ";
+import { Header } from "../components/Header";
+import { DrawerExample } from "../components/DrawerMenu";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
-const initialState = { name: "", title: "", content: "" };
+const initialState = { title: "", content: "" };
 
 const Mypage = () => {
 	const setIsAuthenticated = useSetRecoilState(isAuthenticatedState);
@@ -24,40 +28,6 @@ const Mypage = () => {
 
 	const setInput = (key: string, value: string) => {
 		setFormState({ ...formState, [key]: value });
-	};
-
-	useEffect(() => {
-		const dairyList = async () => {
-			try {
-				const result = (await API.graphql({
-					query: listPosts
-				})) as GraphQLResult<ListPostsQuery>;
-				if (!result) return;
-				console.log(result.data.listPosts.items);
-				setBloglist(result.data.listPosts.items);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		dairyList();
-	}, []);
-
-	const addDiary = async () => {
-		try {
-			if (!formState.title || !formState.content) return;
-			const inputDairy: CreatePostInput = { ...formState };
-			setFormState(initialState);
-			(await API.graphql({
-				authMode: "AMAZON_COGNITO_USER_POOLS",
-				query: createPost,
-				variables: {
-					input: inputDairy
-				}
-			})) as GraphQLResult<CreatePostMutation>;
-			console.log("OK");
-		} catch (error) {
-			console.log("error creating dairy :", error);
-		}
 	};
 
 	const signOut = async () => {
@@ -71,27 +41,47 @@ const Mypage = () => {
 	};
 
 	return (
-		<div>
+		<Box>
 			<ProtectRoute>
-				<h1>Mypage</h1>
-				<Input onChange={(e) => setInput("name", e.target.value)} value={formState.name}></Input>
-				<Input onChange={(e) => setInput("title", e.target.value)} value={formState.title}></Input>
-				<Input onChange={(e) => setInput("content", e.target.value)} value={formState.content}></Input>
-				<Button onClick={addDiary}>Create Todo</Button>
-				<Box>
-					{blogList.map((item) => {
-						return (
-							<Box key={item.id}>
-								<Text> {item.owner}</Text>
-								<Text> {item.content}</Text>
-							</Box>
-						);
-					})}
-				</Box>
-				logdIn
-				<button onClick={signOut}>ログアウト</button>
+				<Header backgroundColor={"teal.300"}>
+					<Text fontSize={"xl"} as="h1">
+						phraseDashBoard
+					</Text>
+					<DrawerExample />
+				</Header>
+				<Center>
+					<Wrap p={"4"}>
+						<WrapItem>
+							<PhraseCord />
+						</WrapItem>
+						<WrapItem>
+							<PhraseCord />
+						</WrapItem>
+						<WrapItem>
+							<PhraseCord />
+						</WrapItem>
+						<WrapItem>
+							<PhraseCord />
+						</WrapItem>
+						<WrapItem>
+							<PhraseCord />
+						</WrapItem>
+						<WrapItem>
+							<AddPhraseCord />
+						</WrapItem>
+					</Wrap>
+				</Center>
 			</ProtectRoute>
-		</div>
+			<Footer backgroundColor={"teal.300"} m={"auto"}>
+				<IconButton
+					aria-label="sign out"
+					onClick={signOut}
+					icon={<VscSignOut />}
+					borderRadius="full"
+					colorScheme={"gray"}
+				></IconButton>
+			</Footer>
+		</Box>
 	);
 };
 export default Mypage;

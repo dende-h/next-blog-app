@@ -2,108 +2,129 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createPost = /* GraphQL */ `
-  mutation CreatePost(
-    $input: CreatePostInput!
-    $condition: ModelPostConditionInput
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    createPost(input: $input, condition: $condition) {
+    createUser(input: $input, condition: $condition) {
       id
-      title
-      content
-      author
-      handlename {
-        id
-        handleName
-        createdAt
-        updatedAt
-        owner
+      userName
+      blog {
+        items {
+          id
+          title
+          content
+          userBlogId
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
       }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updatePost = /* GraphQL */ `
-  mutation UpdatePost(
-    $input: UpdatePostInput!
-    $condition: ModelPostConditionInput
-  ) {
-    updatePost(input: $input, condition: $condition) {
-      id
-      title
-      content
-      author
-      handlename {
-        id
-        handleName
-        createdAt
-        updatedAt
-        owner
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deletePost = /* GraphQL */ `
-  mutation DeletePost(
-    $input: DeletePostInput!
-    $condition: ModelPostConditionInput
-  ) {
-    deletePost(input: $input, condition: $condition) {
-      id
-      title
-      content
-      author
-      handlename {
-        id
-        handleName
-        createdAt
-        updatedAt
-        owner
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createName = /* GraphQL */ `
-  mutation CreateName(
-    $input: CreateNameInput!
-    $condition: ModelNameConditionInput
-  ) {
-    createName(input: $input, condition: $condition) {
-      id
-      handleName
+      profile
       createdAt
       updatedAt
       owner
     }
   }
 `;
-export const updateName = /* GraphQL */ `
-  mutation UpdateName(
-    $input: UpdateNameInput!
-    $condition: ModelNameConditionInput
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    updateName(input: $input, condition: $condition) {
+    updateUser(input: $input, condition: $condition) {
       id
-      handleName
+      userName
+      blog {
+        items {
+          id
+          title
+          content
+          userBlogId
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      profile
       createdAt
       updatedAt
       owner
     }
   }
 `;
-export const deleteName = /* GraphQL */ `
-  mutation DeleteName(
-    $input: DeleteNameInput!
-    $condition: ModelNameConditionInput
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    deleteName(input: $input, condition: $condition) {
+    deleteUser(input: $input, condition: $condition) {
       id
-      handleName
+      userName
+      blog {
+        items {
+          id
+          title
+          content
+          userBlogId
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      profile
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const createBlog = /* GraphQL */ `
+  mutation CreateBlog(
+    $input: CreateBlogInput!
+    $condition: ModelBlogConditionInput
+  ) {
+    createBlog(input: $input, condition: $condition) {
+      id
+      title
+      content
+      userBlogId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateBlog = /* GraphQL */ `
+  mutation UpdateBlog(
+    $input: UpdateBlogInput!
+    $condition: ModelBlogConditionInput
+  ) {
+    updateBlog(input: $input, condition: $condition) {
+      id
+      title
+      content
+      userBlogId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteBlog = /* GraphQL */ `
+  mutation DeleteBlog(
+    $input: DeleteBlogInput!
+    $condition: ModelBlogConditionInput
+  ) {
+    deleteBlog(input: $input, condition: $condition) {
+      id
+      title
+      content
+      userBlogId
       createdAt
       updatedAt
       owner

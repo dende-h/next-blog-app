@@ -2,72 +2,107 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getPost = /* GraphQL */ `
-  query GetPost($id: ID!) {
-    getPost(id: $id) {
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
       id
-      title
-      content
-      author
-      handlename {
-        id
-        handleName
-        createdAt
-        updatedAt
-        owner
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listPosts = /* GraphQL */ `
-  query ListPosts(
-    $filter: ModelPostFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        title
-        content
-        author
-        handlename {
+      userName
+      blog {
+        items {
           id
-          handleName
+          title
+          content
+          userBlogId
           createdAt
           updatedAt
           owner
         }
-        createdAt
-        updatedAt
+        nextToken
       }
-      nextToken
-    }
-  }
-`;
-export const getName = /* GraphQL */ `
-  query GetName($id: ID!) {
-    getName(id: $id) {
-      id
-      handleName
+      profile
       createdAt
       updatedAt
       owner
     }
   }
 `;
-export const listNames = /* GraphQL */ `
-  query ListNames(
-    $filter: ModelNameFilterInput
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listNames(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        handleName
+        userName
+        blog {
+          nextToken
+        }
+        profile
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getBlog = /* GraphQL */ `
+  query GetBlog($id: ID!) {
+    getBlog(id: $id) {
+      id
+      title
+      content
+      userBlogId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listBlogs = /* GraphQL */ `
+  query ListBlogs(
+    $filter: ModelBlogFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        title
+        content
+        userBlogId
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getBlogsByUserBlogId = /* GraphQL */ `
+  query GetBlogsByUserBlogId(
+    $userBlogId: ID!
+    $updatedAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelBlogFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    getBlogsByUserBlogId(
+      userBlogId: $userBlogId
+      updatedAt: $updatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        title
+        content
+        userBlogId
         createdAt
         updatedAt
         owner

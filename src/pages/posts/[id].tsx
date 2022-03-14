@@ -19,7 +19,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 		throw new Error("listPosts error");
 	}
 	const paths = data.listPosts.items.map((post) => ({
-		params: { id: post!.id }
+		params: { id: post!.owner }
 	}));
 	return {
 		fallback: true,
@@ -83,6 +83,70 @@ const PostComponent: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = 
 			throw new Error(errors[0].message);
 		}
 	};
+
+	useEffect(() => {
+		const getNamefunc = async () => {
+			try {
+				const result = (await API.graphql({
+					query: getPost,
+					variables: { id: "e4d138da-84c0-4361-ac65-5ba75fc44442" }
+				})) as GraphQLResult<GetPostQuery>;
+				if (!result) return;
+				console.log(result.data.getPost.handlename.handleName);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		getNamefunc();
+		const dairyList = async () => {
+			try {
+				const result = (await API.graphql({
+					query: listPosts
+				})) as GraphQLResult<ListPostsQuery>;
+				if (!result) return;
+				console.log(result.data.listPosts.items);
+				setBloglist(result.data.listPosts.items);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		dairyList();
+	}, []);
+	const addUser = async () => {
+		try {
+			await API.graphql({
+				authMode: "AMAZON_COGNITO_USER_POOLS",
+				query: createName,
+				variables: { input: { id: "den" } }
+			});
+			console.log("ok");
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	// const addDiary = async () => {
+	// 	try {
+	// 		if (!formState.title || !formState.content) return;
+	// 		const inputDairy: CreatePostInput = { ...formState };
+	// 		setFormState(initialState);
+	// 		(await API.graphql({
+	// 			authMode: "AMAZON_COGNITO_USER_POOLS",
+	// 			query: createPost,
+	// 			variables: {
+	// 				input: { ...inputDairy, postHandlenameId: "asahi", name: "nico" }
+	// 			}
+	// 		})) as GraphQLResult<CreatePostMutation>;
+	// 		await API.graphql({
+	// 			authMode: "AMAZON_COGNITO_USER_POOLS",
+	// 			query: createName,
+	// 			variables: { input: { id: "other" } }
+	// 		});
+	// 		console.log("OK");
+	// 	} catch (error) {
+	// 		console.log("error creating dairy :", error);
+	// 	}
+	// };
 
 	return (
 		<div>

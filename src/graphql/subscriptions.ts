@@ -2,90 +2,111 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreatePost = /* GraphQL */ `
-  subscription OnCreatePost($author: String) {
-    onCreatePost(author: $author) {
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser($owner: String) {
+    onCreateUser(owner: $owner) {
       id
-      title
-      content
-      author
-      handlename {
-        id
-        handleName
-        createdAt
-        updatedAt
-        owner
+      userName
+      blog {
+        items {
+          id
+          title
+          content
+          userBlogId
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
       }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdatePost = /* GraphQL */ `
-  subscription OnUpdatePost($author: String) {
-    onUpdatePost(author: $author) {
-      id
-      title
-      content
-      author
-      handlename {
-        id
-        handleName
-        createdAt
-        updatedAt
-        owner
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeletePost = /* GraphQL */ `
-  subscription OnDeletePost($author: String) {
-    onDeletePost(author: $author) {
-      id
-      title
-      content
-      author
-      handlename {
-        id
-        handleName
-        createdAt
-        updatedAt
-        owner
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateName = /* GraphQL */ `
-  subscription OnCreateName($owner: String) {
-    onCreateName(owner: $owner) {
-      id
-      handleName
+      profile
       createdAt
       updatedAt
       owner
     }
   }
 `;
-export const onUpdateName = /* GraphQL */ `
-  subscription OnUpdateName($owner: String) {
-    onUpdateName(owner: $owner) {
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser($owner: String) {
+    onUpdateUser(owner: $owner) {
       id
-      handleName
+      userName
+      blog {
+        items {
+          id
+          title
+          content
+          userBlogId
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      profile
       createdAt
       updatedAt
       owner
     }
   }
 `;
-export const onDeleteName = /* GraphQL */ `
-  subscription OnDeleteName($owner: String) {
-    onDeleteName(owner: $owner) {
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser($owner: String) {
+    onDeleteUser(owner: $owner) {
       id
-      handleName
+      userName
+      blog {
+        items {
+          id
+          title
+          content
+          userBlogId
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      profile
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onCreateBlog = /* GraphQL */ `
+  subscription OnCreateBlog($owner: String) {
+    onCreateBlog(owner: $owner) {
+      id
+      title
+      content
+      userBlogId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateBlog = /* GraphQL */ `
+  subscription OnUpdateBlog($owner: String) {
+    onUpdateBlog(owner: $owner) {
+      id
+      title
+      content
+      userBlogId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteBlog = /* GraphQL */ `
+  subscription OnDeleteBlog($owner: String) {
+    onDeleteBlog(owner: $owner) {
+      id
+      title
+      content
+      userBlogId
       createdAt
       updatedAt
       owner

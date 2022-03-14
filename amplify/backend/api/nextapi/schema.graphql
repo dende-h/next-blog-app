@@ -3,17 +3,18 @@
 input AMPLIFY {
 	globalAuthRule: AuthRule = { allow: public }
 } # FOR TESTING ONLY!
-type Post @model @auth(rules: [{ allow: owner, ownerField: "author" }, { allow: public, operations: [read] }]) {
+type User @model @auth(rules: [{ allow: owner }, { allow: public, operations: [read] }]) {
 	id: ID!
-	title: String!
-	content: String!
-	author: ID!
-	handlename: Name @hasOne(fields: ["author"])
-	createdAt: AWSDateTime
-	updatedAt: AWSDateTime
+	userName: String @default(value: "Anonymous")
+	blog: [Blog] @hasMany(indexName: "byUserBlogId", fields: ["id"])
+	profile: String @default(value: "nonProfile")
 }
 
-type Name @model @auth(rules: [{ allow: owner }, { allow: public, operations: [read] }]) {
+type Blog @model @auth(rules: [{ allow: owner }, { allow: public, operations: [read] }]) {
 	id: ID!
-	handleName: String @default(value: "Anonymous")
+	title: String @default(value: "nonTitle")
+	content: String @default(value: "nonContent")
+	userBlogId: ID @index(name: "byUserBlogId", sortKeyFields: ["updatedAt"], queryField: "getBlogsByUserBlogId")
+	createdAt: AWSDateTime
+	updatedAt: AWSDateTime
 }
