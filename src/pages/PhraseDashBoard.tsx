@@ -1,28 +1,22 @@
-import { Amplify, API, Auth, withSSRContext } from "aws-amplify";
-import { useRouter } from "next/router";
+import { Amplify, API, withSSRContext } from "aws-amplify";
 import { ProtectRoute } from "../components/ProtectRoute";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { isAuthenticatedState } from "../globalState/isAuthenticatedState";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { VscSignOut } from "react-icons/vsc";
 import { useEffect, useState } from "react";
-import { Box, Button, Center, IconButton, Input, Stack, Text, Wrap, WrapItem } from "@chakra-ui/react";
+import { Box, Button, Center, IconButton, Input, Stack, Text, Wrap, WrapItem, Spacer } from "@chakra-ui/react";
 import awsExports from "../aws-exports";
 
 import { blogLists } from "../globalState/blogLists";
-import { Footer } from "../components/Footer";
+import { Footer } from "../components/atoms/Footer";
 import { PhraseCord } from "../components/PhraseCard";
 import { AddPhraseCord } from "../components/AddPhraseCard ";
-import { Header } from "../components/Header";
-import { DrawerExample } from "../components/DrawerMenu";
+import MainHeaderLayout from "../templates/MainHeaderLayout";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
 const initialState = { title: "", content: "" };
 
-const Mypage = () => {
-	const setIsAuthenticated = useSetRecoilState(isAuthenticatedState);
-	const router = useRouter();
+const PhraseDashBoard = () => {
 	const [formState, setFormState] = useState(initialState);
 	const [blogList, setBloglist] = useRecoilState(blogLists);
 
@@ -30,28 +24,12 @@ const Mypage = () => {
 		setFormState({ ...formState, [key]: value });
 	};
 
-	const signOut = async () => {
-		try {
-			await Auth.signOut();
-			setIsAuthenticated(false);
-			router.push("/");
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
 	return (
 		<Box>
 			<ProtectRoute>
-				<Header backgroundColor={"teal.300"}>
-					<Text fontSize={"xl"} as="h1">
-						phraseDashBoard
-					</Text>
-					<DrawerExample />
-				</Header>
 				<Center>
 					<Wrap p={"4"}>
-						<WrapItem>
+						<WrapItem _hover={{ cursor: "pointer" }}>
 							<PhraseCord />
 						</WrapItem>
 						<WrapItem>
@@ -72,19 +50,11 @@ const Mypage = () => {
 					</Wrap>
 				</Center>
 			</ProtectRoute>
-			<Footer backgroundColor={"teal.300"} m={"auto"}>
-				<IconButton
-					aria-label="sign out"
-					onClick={signOut}
-					icon={<VscSignOut />}
-					borderRadius="full"
-					colorScheme={"gray"}
-				></IconButton>
-			</Footer>
+			<Footer backgroundColor={"teal.300"} w={"100%"}></Footer>
 		</Box>
 	);
 };
-export default Mypage;
+export default PhraseDashBoard;
 // const handleCreatePost = async (event: React.FormEvent<HTMLFormElement>) => {
 // 	event.preventDefault();
 

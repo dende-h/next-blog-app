@@ -8,37 +8,99 @@ import {
 	DrawerCloseButton,
 	Button,
 	useDisclosure,
-	Input
+	Input,
+	Stack,
+	Box,
+	Text,
+	Divider,
+	IconButton,
+	Icon
 } from "@chakra-ui/react";
-import React from "react";
+import Link from "next/link";
+import React, { memo } from "react";
+import { Amplify, API, Auth, withSSRContext } from "aws-amplify";
+import awsExports from "../aws-exports";
+import { useRecoilState } from "recoil";
+import { isAuthenticatedState } from "../globalState/isAuthenticatedState";
+import { useRouter } from "next/router";
+import { CgMenuBoxed } from "react-icons/cg";
 
-export function DrawerExample() {
+Amplify.configure({ ...awsExports, ssr: true });
+
+export const DrawerMenu = memo(() => {
+	const [isAuthenticated, setIsAuthenticated] = useRecoilState(isAuthenticatedState);
+	const router = useRouter();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const btnRef = React.useRef();
+	const signOut = async () => {
+		try {
+			await Auth.signOut();
+			setIsAuthenticated(false);
+			router.push("/");
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		<>
-			<Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
-				Open
-			</Button>
-			<Drawer isOpen={isOpen} placement="right" onClose={onClose} finalFocusRef={btnRef}>
-				<DrawerOverlay />
-				<DrawerContent>
-					<DrawerCloseButton />
-					<DrawerHeader>Create your account</DrawerHeader>
+			{isAuthenticated ? (
+				<>
+					<Icon
+						boxSize={"8"}
+						ref={btnRef}
+						onClick={onOpen}
+						as={CgMenuBoxed}
+						_hover={{ cursor: "pointer", opacity: "0.8" }}
+						color="gray.200"
+					/>
+					<Drawer isOpen={isOpen} placement="right" onClose={onClose} finalFocusRef={btnRef}>
+						<DrawerOverlay />
+						<DrawerContent fontFamily={"sans-serif"}>
+							<DrawerCloseButton />
+							<DrawerHeader>Menu</DrawerHeader>
 
-					<DrawerBody>
-						<Input placeholder="Type here..." />
-					</DrawerBody>
-
-					<DrawerFooter>
-						<Button variant="outline" mr={3} onClick={onClose}>
-							Cancel
-						</Button>
-						<Button colorScheme="blue">Save</Button>
-					</DrawerFooter>
-				</DrawerContent>
-			</Drawer>
+							<DrawerBody>
+								<Stack spacing={"4"}>
+									<Divider borderColor={"gray"} />
+									<Link href={"/PhraseDashBoard"}>
+										<Text as={"a"} _hover={{ cursor: "pointer", fontWeight: "bold" }} onClick={onClose}>
+											Phrese dash board
+										</Text>
+									</Link>
+									<Divider borderColor={"gray"} />
+									<Link href={"/MyPhrase"}>
+										<Text as={"a"} _hover={{ cursor: "pointer", fontWeight: "bold" }} onClick={onClose}>
+											My Phrese
+										</Text>
+									</Link>
+									<Divider borderColor={"gray"} />
+									<Link href={"/UserInfo"}>
+										<Text as={"a"} _hover={{ cursor: "pointer", fontWeight: "bold" }} onClick={onClose}>
+											User info
+										</Text>
+									</Link>
+									<Divider borderColor={"gray"} />
+									<Link href={"/Contact"}>
+										<Text as={"a"} _hover={{ cursor: "pointer", fontWeight: "bold" }} onClick={onClose}>
+											Contact
+										</Text>
+									</Link>
+									<Divider borderColor={"gray"} />
+									<Box>
+										<Text onClick={signOut} _hover={{ cursor: "pointer", fontWeight: "bold" }}>
+											Sign out
+										</Text>
+									</Box>
+									<Divider borderColor={"gray"} />
+								</Stack>
+							</DrawerBody>
+						</DrawerContent>
+					</Drawer>
+				</>
+			) : (
+				<></>
+			)}
 		</>
 	);
-}
+});
