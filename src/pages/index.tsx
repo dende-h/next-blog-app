@@ -1,6 +1,7 @@
 // import { Amplify, API, Auth, withSSRContext } from "aws-amplify";
 // import { Authenticator } from "@aws-amplify/ui-react";
 import { NextPage } from "next";
+import { Box } from "@chakra-ui/react";
 import { useRecoilValue } from "recoil";
 // import awsExports from "../aws-exports";
 import SignIn from "../components/SignIn";
@@ -115,9 +116,10 @@ import { isSignUpState } from "../globalState/isSignUpState";
 // export default Index;
 
 const Index: NextPage = () => {
-	const isSingUp = useRecoilValue(isSignUpState);
-
-	return <>{isSingUp ? <SignUp /> : <SignIn />}</>;
+	return (
+		<>
+			<Box>index page</Box>
+		</>
+	);
 };
-
 export default Index;
