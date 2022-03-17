@@ -1,38 +1,56 @@
-// import { Amplify, API, Auth, withSSRContext } from "aws-amplify";
+import { Amplify, API, Auth, withSSRContext } from "aws-amplify";
 // import { Authenticator } from "@aws-amplify/ui-react";
 import { NextPage } from "next";
-import { Box } from "@chakra-ui/react";
-import { useRecoilValue } from "recoil";
-// import awsExports from "../aws-exports";
-import SignIn from "../components/SignIn";
-import SignUp from "../components/SignUp";
-import { isSignUpState } from "../globalState/isSignUpState";
+import { Box, Text } from "@chakra-ui/react";
+// import { useRecoilValue } from "recoil";
+import awsExports from "../aws-exports";
+// import SignIn from "../components/SignIn";
+// import SignUp from "../components/SignUp";
+// import { isSignUpState } from "../globalState/isSignUpState";
 // import { createPost } from "../graphql/mutations";
-// import { listPosts } from "../graphql/queries";
+import { listBlogs, listUsers } from "../graphql/queries";
 //import styles from "../styles/Home.module.css";
 // import Head from "next/head";
-// import { GraphQLResult } from "@aws-amplify/api-graphql";
-// import { CreatePostMutation, ListPostsQuery } from "../API";
+import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { ListBlogsQuery, ListUsersQuery } from "../API";
 // import "@aws-amplify/ui-react/styles.css";
 
-// Amplify.configure({ ...awsExports, ssr: true });
+Amplify.configure({ ...awsExports, ssr: true });
 
-// type Post = {
-// 	id: string;
-// 	title: string;
-// 	content: string;
-// };
+type Blog = {
+	id: string;
+	title?: string;
+	content?: string;
+	userBlogId?: string;
+	createdAt?: string;
+	updatedAt?: string;
+	owner?: string;
+};
 
-// export const getServerSideProps = async ({ req }) => {
-// 	const SSR = withSSRContext({ req });
-// 	const response = (await SSR.API.graphql({ query: listPosts })) as GraphQLResult<ListPostsQuery>;
-
-// 	return {
-// 		props: {
-// 			posts: response.data.listPosts.items
-// 		}
-// 	};
-// };
+type User = {
+	id: string;
+	userName?: string;
+	blog?: Blog;
+	profile?: string;
+	createdAt?: Date;
+	updatedAt?: Date;
+	owner?: string;
+};
+export const getStaticProps = async ({ req }) => {
+	const SSR = withSSRContext({ req });
+	try {
+		const response = (await SSR.API.graphql({ query: listUsers })) as GraphQLResult<ListUsersQuery>;
+		console.log(response.data.listUsers.items);
+		return {
+			props: {
+				users: response.data.listUsers.items
+			},
+			revalidate: 10
+		};
+	} catch (error) {
+		console.log(error);
+	}
+};
 
 // const handleCreatePost = async (event: React.FormEvent<HTMLFormElement>) => {
 // 	event.preventDefault();
@@ -115,10 +133,13 @@ import { isSignUpState } from "../globalState/isSignUpState";
 // };
 // export default Index;
 
-const Index: NextPage = () => {
+const Index = ({ users = [] }: { users: User[] }) => {
 	return (
 		<>
 			<Box>index page</Box>
+			{users.map((item) => {
+				return <Text>{item.userName}</Text>;
+			})}
 		</>
 	);
 };

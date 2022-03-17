@@ -37,7 +37,7 @@ const SignIn: VFC = memo(() => {
 	const regexPassword = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])/;
 
 	useEffect(() => {
-		isAuthenticated && Router.push("PhraseDashBoard");
+		isAuthenticated && Router.push("/blogApp/PhraseDashBoard");
 	}, []);
 
 	useEffect(() => {
@@ -61,7 +61,7 @@ const SignIn: VFC = memo(() => {
 			setIsLoading(true);
 			await Auth.signIn(email.value, password.value);
 			setIsAuthenticated(true);
-			Router.push("PhraseDashBoard");
+			Router.push("blogApp/PhraseDashBoard");
 		} catch (error) {
 			toast.error("Could not Sign in.");
 			setIsLoading(false);

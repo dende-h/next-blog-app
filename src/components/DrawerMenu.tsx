@@ -36,7 +36,7 @@ export const DrawerMenu = memo(() => {
 		try {
 			await Auth.signOut();
 			setIsAuthenticated(false);
-			router.push("/");
+			router.push("/blogApp/SignIn");
 		} catch (error) {
 			console.log(error);
 		}
@@ -63,25 +63,25 @@ export const DrawerMenu = memo(() => {
 							<DrawerBody>
 								<Stack spacing={"4"}>
 									<Divider borderColor={"gray"} />
-									<Link href={"/PhraseDashBoard"}>
+									<Link href={"/blogApp/PhraseDashBoard"}>
 										<Text as={"a"} _hover={{ cursor: "pointer", fontWeight: "bold" }} onClick={onClose}>
 											Phrese dash board
 										</Text>
 									</Link>
 									<Divider borderColor={"gray"} />
-									<Link href={"/MyPhrase"}>
+									<Link href={"/blogApp/MyPhrase"}>
 										<Text as={"a"} _hover={{ cursor: "pointer", fontWeight: "bold" }} onClick={onClose}>
 											My Phrese
 										</Text>
 									</Link>
 									<Divider borderColor={"gray"} />
-									<Link href={"/UserInfo"}>
+									<Link href={"/blogApp/UserInfo"}>
 										<Text as={"a"} _hover={{ cursor: "pointer", fontWeight: "bold" }} onClick={onClose}>
 											User info
 										</Text>
 									</Link>
 									<Divider borderColor={"gray"} />
-									<Link href={"/Contact"}>
+									<Link href={"/blogApp/Contact"}>
 										<Text as={"a"} _hover={{ cursor: "pointer", fontWeight: "bold" }} onClick={onClose}>
 											Contact
 										</Text>

@@ -1,16 +1,16 @@
 import { Amplify, API, withSSRContext } from "aws-amplify";
-import { ProtectRoute } from "../components/ProtectRoute";
+import { ProtectRoute } from "../../components/ProtectRoute";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { useEffect, useState } from "react";
 import { Box, Button, Center, IconButton, Input, Stack, Text, Wrap, WrapItem, Spacer } from "@chakra-ui/react";
-import awsExports from "../aws-exports";
+import awsExports from "../../aws-exports";
 
-import { blogLists } from "../globalState/blogLists";
-import { Footer } from "../components/atoms/Footer";
-import { PhraseCord } from "../components/PhraseCard";
-import { AddPhraseCord } from "../components/AddPhraseCard ";
-import MainHeaderLayout from "../templates/MainHeaderLayout";
+import { blogLists } from "../../globalState/blogLists";
+import { Footer } from "../../components/atoms/Footer";
+import { PhraseCord } from "../../components/PhraseCard";
+import { AddPhraseCord } from "../../components/AddPhraseCard ";
+import MainHeaderLayout from "../../templates/MainHeaderLayout";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
